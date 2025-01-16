@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import db from "../database/entity/index.js";
 const Account = db["Account"];
 const Transaction = db["Transaction"];
@@ -30,8 +31,9 @@ export const createTransaction = async (data) => {
 };
 
 // Get all transactions
-export const getAllTransactions = async () => {
+export const getAllTransactions = async (userId) => {
   return await Transaction.findAll({
+    where: { userId:userId },
     include: [
       {
         model: Account,
@@ -41,6 +43,16 @@ export const getAllTransactions = async () => {
         model: User,
         as: "user",
         attributes: ["id", "firstname", "lastname", "email"],
+      },
+      {
+        model: Subcategory,
+        as: "subcategory",
+        include:[
+          {
+            model: Category,
+            as: "category",         
+          },
+        ],
       },
     ],
     order: [["createdAt", "DESC"]],
@@ -48,77 +60,48 @@ export const getAllTransactions = async () => {
 };
 
 // Get a transaction by ID
-export const getTransactionById = async (id) => {
+export const getTransactionById = async (id,userId) => {
   return await Transaction.findOne({
-    where: { id },
+    where: {id:id,userId:userId},
     include: [
       {
         model: Account,
         as: "account",
-        attributes: ["id", "name", "balance"],
       },
       {
         model: User,
         as: "user",
         attributes: ["id", "firstname", "lastname", "email"],
+        include:[
+          {
+            model: Budget,
+            as: "Budget",         
+          },
+        ],
+      },
+      {
+        model: Subcategory,
+        as: "subcategory",
+        include:[
+          {
+            model: Category,
+            as: "category",         
+          },
+        ],
       },
     ],
   });
 };
 
-// Update a transaction and update account balance
-export const updateTransaction = async (id, data) => {
-  const { accountId, amount, transactionType } = data;
-  
-  // Get the previous transaction details
-  const oldTransaction = await Transaction.findOne({ where: { id } });
 
-  // Update the transaction
-  const updatedTransaction = await Transaction.update(data, { where: { id }, returning: true });
-
-  // Revert old transaction balance change
-  const oldAccount = await Account.findByPk(accountId);
-  if (oldTransaction.transactionType === "income") {
-    oldAccount.balance -= oldTransaction.amount;  // Revert income
-  } else if (oldTransaction.transactionType === "expense") {
-    oldAccount.balance += oldTransaction.amount;  // Revert expense
-  }
-  
-  // Apply the new balance change based on updated transaction type
-  if (transactionType === "income") {
-    oldAccount.balance += amount;  // Increase balance for income
-  } else if (transactionType === "expense") {
-    oldAccount.balance -= amount;  // Decrease balance for expense
-  }
-
-  // Save the updated account balance
-  await oldAccount.save();
-
-  return updatedTransaction;
-};
 
 // Delete a transaction and update account balance
 export const deleteTransaction = async (id) => {
   const transaction = await Transaction.findOne({ where: { id } });
-
-  // Update the account balance based on the transaction type
-  const account = await Account.findByPk(transaction.accountId);
-  if (transaction.transactionType === "income") {
-    account.balance -= transaction.amount;  // Reverse income
-  } else if (transaction.transactionType === "expense") {
-    account.balance += transaction.amount;  // Reverse expense
-  }
-
-  // Save the updated account balance
-  await account.save();
-
-  // Delete the transaction
   await Transaction.destroy({ where: { id } });
 
   return { success: true, message: "Transaction deleted successfully." };
 };
-
-
 
 export const generateUserReportService = async (userId, startDate, endDate) => {
   // Parse the date strings into Date objects
@@ -139,8 +122,31 @@ export const generateUserReportService = async (userId, startDate, endDate) => {
       },
     },
     include: [
-      { model: Category, as: "category", attributes: ["id", "name"] },
-      { model: Account, as: "account" },
+      {
+        model: Account,
+        as: "account",
+      },
+      {
+        model: User,
+        as: "user",
+        attributes: ["id", "firstname", "lastname", "email"],
+        include:[
+          {
+            model: Budget,
+            as: "Budget",         
+          },
+        ],
+      },
+      {
+        model: Subcategory,
+        as: "subcategory",
+        include:[
+          {
+            model: Category,
+            as: "category",         
+          },
+        ],
+      },
     ],
   });
 
@@ -166,8 +172,6 @@ export const generateUserReportService = async (userId, startDate, endDate) => {
   return reportSummary;
 };
 
-
-
 export const transactionSummaryService = async (userId) => {
     if (!Number.isInteger(userId)) {
       throw new Error("Invalid user ID type. Must be an integer.");
@@ -175,7 +179,33 @@ export const transactionSummaryService = async (userId) => {
   
     const transactions = await Transaction.findAll({
       where: { userId }, // Ensure userId is an integer here
-      attributes: ["type", "amount"],
+      include: [
+        {
+          model: Account,
+          as: "account",
+        },
+        {
+          model: User,
+          as: "user",
+          attributes: ["id", "firstname", "lastname", "email"],
+          include:[
+            {
+              model: Budget,
+              as: "Budget",         
+            },
+          ],
+        },
+        {
+          model: Subcategory,
+          as: "subcategory",
+          include:[
+            {
+              model: Category,
+              as: "category",         
+            },
+          ],
+        },
+      ],
     });
   
     const incomeTotal = transactions

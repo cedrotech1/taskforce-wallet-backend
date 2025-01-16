@@ -17,10 +17,7 @@ export default (sequelize) => {
       });
 
       // A Category can have many Transactions
-      Category.hasMany(models.Transaction, {
-        foreignKey: 'categoryId',
-        as: 'transactions',
-      });
+  
     }
   }
 

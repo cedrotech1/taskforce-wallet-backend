@@ -17,9 +17,9 @@ export default (sequelize) => {
       });
 
       // A Transaction belongs to a Category
-      Transaction.belongsTo(models.Category, {
-        foreignKey: 'categoryId',
-        as: 'category',
+      Transaction.belongsTo(models.Subcategory, {
+        foreignKey: 'subcategoryId',
+        as: 'subcategory',
       });
     }
   }
@@ -42,11 +42,11 @@ export default (sequelize) => {
           key: 'id',
         },
       },
-      categoryId: {
+      subcategoryId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'category',
+          model: 'Subcategory',
           key: 'id',
         },
       },

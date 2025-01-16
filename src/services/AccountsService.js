@@ -21,6 +21,29 @@ export const getAccountById = async (id) => {
   ] });
 };
 
+export const getAccountByUser = async (id,userId) => {
+  try {
+    const account = await Account.findOne({
+      where: { id: id,userId:userId },
+      include: [
+        { model: Transaction, as: "transactions" },
+        { model: User, as: "user", attributes: ["id", "firstname", "lastname", "email"] },
+      ],
+    });
+
+    return account;
+  } catch (error) {
+    console.error("Error fetching user account:", error);
+    throw error;
+  }
+};
+// export const getAccountByUser = async (userId) => {
+//   return Account.findAll(findAll, { include: [
+//     { model: Transaction, as: "transactions" }, 
+//       { model: User, as: "user", attributes: ["id", "firstname", "lastname", "email"] },
+//   ] });
+// };
+
 export const updateAccount = async (id, accountData) => {
   const account = await Account.findByPk(id);
   if (!account) return null;

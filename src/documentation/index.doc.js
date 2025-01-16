@@ -25,6 +25,7 @@ const options = {
     { name: "category", description: "category" },
     { name: "subcategory", description: "subcategory" },
     { name: "transaction", description: "transaction" },
+    { name: "report", description: "report" },
   ],
   paths: {
     "/api/v1/auth/login": {
@@ -37,9 +38,9 @@ const options = {
         requestBody: {
           content: {
             "application/json": {
-              schema: {
-                $ref: "#/components/schemas/User",
-              },
+              // schema: {
+              //   $ref: "#/components/schemas/User",
+              // },
               example: {
                 email: "superadmin@gmail.com",
                 password: "1234",
@@ -75,9 +76,9 @@ const options = {
         requestBody: {
           content: {
             "application/json": {
-              schema: {
-                $ref: "#/components/schemas/User",
-              },
+              // schema: {
+              //   $ref: "#/components/schemas/User",
+              // },
               example: {
                 firstname: "John",
                 lastname: "cedrick",
@@ -117,9 +118,9 @@ const options = {
         requestBody: {
           content: {
             "application/json": {
-              schema: {
-                $ref: "#/components/schemas/User",
-              },
+              // schema: {
+              //   $ref: "#/components/schemas/User",
+              // },
               example: {
                 email: "cedrickhakuzimana.com",                    
               },
@@ -167,9 +168,9 @@ const options = {
         requestBody: {
           content: {
             "application/json": {
-              schema: {
-                $ref: "#/components/schemas/User",
-              },
+              // schema: {
+              //   $ref: "#/components/schemas/User",
+              // },
               example: {
                 code: "10000",                    
               },
@@ -479,9 +480,9 @@ const options = {
         requestBody: {
           content: {
             "application/json": {
-              schema: {
-                $ref: "#/components/schemas/User",
-              },
+              // schema: {
+              //   $ref: "#/components/schemas/User",
+              // },
               example: {
                 oldPassword: "oldp",
                 newPassword: "newp",
@@ -655,9 +656,9 @@ const options = {
         requestBody: {
           content: {
             "application/json": {
-              schema: {
-                $ref: "#/components/schemas/Account",
-              },
+              // schema: {
+              //   $ref: "#/components/schemas/Account",
+              // },
               example: {
                 "balance": 1000.0,
                 "accountType": "savings",
@@ -704,9 +705,9 @@ const options = {
         requestBody: {
           content: {
             "application/json": {
-              schema: {
-                $ref: "#/components/schemas/User",
-              },
+              // schema: {
+              //   $ref: "#/components/schemas/User",
+              // },
               example: {
                 "balance": 1000.0,
                 "accountType": "savings",
@@ -772,12 +773,12 @@ const options = {
     requestBody: {
       content: {
         "application/json": {
-          schema: {
-            $ref: "#/components/schemas/User",
-          },
+          // schema: {
+          //   $ref: "#/components/schemas/budgets",
+          // },
           example: {
             "limit": 1000.0,
-            "currentSpending": 200.0,
+            // "currentSpending": 200.0,
    
           },
         },
@@ -810,9 +811,9 @@ const options = {
     requestBody: {
       content: {
         "application/json": {
-          schema: {
-            $ref: "#/components/schemas/budgets",
-          },
+          // schema: {
+          //   $ref: "#/components/schemas/budgets",
+          // },
           example: {
             "limit": 1000.0,
           
@@ -945,9 +946,9 @@ const options = {
     requestBody: {
       content: {
         "application/json": {
-          schema: {
-            $ref: "#/components/schemas/category",
-          },
+          // schema: {
+          //   $ref: "#/components/schemas/category",
+          // },
           example: {
             "name": "Food & Beverages",
             "description": "All expenses related to food and drinks",
@@ -993,9 +994,9 @@ const options = {
     requestBody: {
       content: {
         "application/json": {
-          schema: {
-            $ref: "#/components/schemas/category",
-          },
+          // schema: {
+          //   $ref: "#/components/schemas/category",
+          // },
           example: {
             "name": "Food & Beverages",
             "description": "All expenses related to food and drinks",
@@ -1128,9 +1129,9 @@ const options = {
     requestBody: {
       content: {
         "application/json": {
-          schema: {
-            $ref: "#/components/schemas/category",
-          },
+          // schema: {
+          //   $ref: "#/components/schemas/category",
+          // },
           example: {
             "name": "Engine Repair",
             "categoryId": 1
@@ -1176,9 +1177,9 @@ const options = {
     requestBody: {
       content: {
         "application/json": {
-          schema: {
-            $ref: "#/components/schemas/subcategory",
-          },
+          // schema: {
+          //   $ref: "#/components/schemas/subcategory",
+          // },
           example: {
             "name": "Engine Repair",
             "categoryId": 1
@@ -1311,12 +1312,12 @@ const options = {
     requestBody: {
       content: {
         "application/json": {
-          schema: {
-            $ref: "#/components/schemas/transaction",
-          },
+          // schema: {
+          //   $ref: "#/components/schemas/transaction",
+          // },
           example: {
             "accountId": 2,
-            "categoryId": 1,
+            "subcategoryId": 1,
             "type": "income or expense",
             "amount": 100.00,
             "description": "Purchased office supplies"
@@ -1342,43 +1343,38 @@ const options = {
   },
 },
 
-"/api/v1/transaction/update/{id}": {
-  put: {
-    tags: ["transaction"],
-    summary: "update transaction ",
-    description: "this endpoint used update transaction",
-    operationId: "update_transaction",
+"/api/v1/transaction/user-report": {
+  get: {
+    tags: ["report"],
+    summary: "all  a my report",
+    description: "transaction",
+    operationId: "all_transaction",
     parameters: [
       {
-        name: "id",
-        in: "path",
-        description: "transaction's id",
+        name: "startDate",
+        in: "query",
+        description: "he start date of the report range (format: YYYY-MM-DD).",
         required: true,
         schema: {
           type: "string",
+          format:'date'
+        },
+      },
+      {
+        name: "endDate",
+        in: "query",
+        description: "he end date of the report range (format: YYYY-MM-DD).",
+        required: true,
+        schema: {
+          type: "string",
+          format:'date'
         },
       },
     ],
-    requestBody: {
-      content: {
-        "application/json": {
-          schema: {
-            $ref: "#/components/schemas/transaction",
-          },
-          example: {
-            "accountId": 2,
-            "categoryId": 1,
-            "type": "income or expense",
-            "amount": 100.00,
-            "description": "Purchased office supplies"
-          },
-        },
-        required: true,
-      },
-    },
+
     responses: {
       201: {
-        description: "transaction created successfully",
+        description: "report  retrieved successfully",
       },
       400: {
         description: "Bad request",
@@ -1393,15 +1389,52 @@ const options = {
   },
 },
 
+"/api/v1/transaction/transaction-summary": {
+  get: {
+    tags: ["report"],
+    summary: "all  a my report",
+    description: "transaction",
+    operationId: "all_transaction",
+    parameters: [
+      {
+        name: "startDate",
+        in: "query",
+        description: "he start date of the report range (format: YYYY-MM-DD).",
+        required: true,
+        schema: {
+          type: "string",
+          format:'date'
+        },
+      },
+      {
+        name: "endDate",
+        in: "query",
+        description: "he end date of the report range (format: YYYY-MM-DD).",
+        required: true,
+        schema: {
+          type: "string",
+          format:'date'
+        },
+      },
+    ],
 
+    responses: {
+      201: {
+        description: "report  retrieved successfully",
+      },
+      400: {
+        description: "Bad request",
+      },
+      401: {
+        description: "Unauthorized",
+      },
+      500: {
+        description: "Something went wrong",
+      },
+    },
+  },
+},
 
-
-
-
-
- 
-
-    
 
   },
 

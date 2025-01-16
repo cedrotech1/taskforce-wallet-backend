@@ -18,6 +18,11 @@ export default (sequelize) => {
         foreignKey: 'userId',
         as: 'transactions',
       });
+
+      User.hasOne(models.Budget, {
+        foreignKey: 'userId',
+        as: 'Budget',
+      });
     }
   }
 

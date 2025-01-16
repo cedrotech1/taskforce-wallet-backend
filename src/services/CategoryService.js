@@ -9,8 +9,9 @@ const Subcategory = db["Subcategory"];
 
 // Get all categories for a user   Subcategory
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (userId) => {
   return await Category.findAll({
+    where: { userId },
     include: [
       {
         model: User,
@@ -22,11 +23,7 @@ export const getAllCategories = async () => {
         as: "subcategories",
         attributes: ["id", "name"],
       },
-      {
-        model: Transaction,
-        as: "transactions",
-       
-      },
+
     ],
     order: [["createdAt", "DESC"]],
   });
@@ -47,11 +44,6 @@ export const getCategoryByIdAndUserId = async (id, userId) => {
         model: Subcategory,
         as: "subcategories",
         attributes: ["id", "name"],
-      },
-      {
-        model: Transaction,
-        as: "transactions",
-       
       },
     ],
   });

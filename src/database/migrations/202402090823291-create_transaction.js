@@ -24,10 +24,10 @@ module.exports = {
         },
         allowNull: false,
       },
-      categoryId: {
+      subcategoryId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Category',
+          model: 'Subcategory',
           key: 'id',
         },
         allowNull: false,

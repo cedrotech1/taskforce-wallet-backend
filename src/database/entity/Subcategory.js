@@ -9,7 +9,14 @@ export default (sequelize) => {
         foreignKey: 'categoryId',
         as: 'category',
       });
+
+      Subcategory.hasMany(models.Transaction, {
+        foreignKey: 'subcategoryId',
+        as: 'transactions',
+      });
     }
+
+    
   }
 
   Subcategory.init(
