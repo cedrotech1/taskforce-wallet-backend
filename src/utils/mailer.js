@@ -70,14 +70,6 @@ class Email {
     await this.send("accountAdded", "Your Account on millacle web is Ready");
   }
 
-  async sendPostConfirmation() {
-    await this.send("postConfirmation", "Post Confirmation");
-  }
-
-
-  async sendPostNewRequest() {
-    await this.send("PostRequest", "Millacle-New post");
-  }
 
 
 }
