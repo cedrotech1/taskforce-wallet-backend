@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Post Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #4a4a4a;
+        background-color: #f0f4f9;
+        padding: 20px;
+        margin: 0;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        border-top: 4px solid #4caf50;
+      }
+      a,
+      a:visited {
+        color: #4caf50;
+        text-decoration: none;
+      }
+      a:hover,
+      a:active {
+        text-decoration: underline;
+      }
+      .header {
+        color: #fff;
+        background-color: #4caf50;
+        padding: 10px;
+        border-radius: 4px 4px 0 0;
+        font-size: 24px;
+        line-height: 28px;
+        text-align: center;
+      }
+      .footer {
+        font-size: 12px;
+        color: #909090;
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body style="background-color: #f0f4f9">
+    <br><br>
+    <div class="email-container">
+      <div class="header">Post saved successfully</div>
+      <h4>Dear <%= firstname %> <%= lastname %>,</h4>
+      <p>
+        You have successfully saved the post. Here are the details you provided:
+      </p><br>
+      <table style="margin: auto; width: 90%; text-align: left">
+        <% if (title) { %>
+        <tr>
+          <td><strong>Post Title</strong></td>
+          <td><%= title %></td>
+        </tr>
+        <% } %>
+        <% if (description) { %>
+        <tr>
+          <td colspan="2" style="text-align: center;"><strong>Description</strong></td>
+        </tr>
+        <tr>
+          <td colspan="2"><%= description %></td>
+        </tr>
+        <% } %>
+        <tr>
+          <td colspan="2"><img style="width: 100%;" src="<%= file %>" alt=""></td>
+        </tr>
+        <tr>
+          <td><strong>Date:</strong></td>
+          <td><%= date %></td>
+        </tr>
+        <tr>
+          <td><strong>Time:</strong></td>
+          <td><%= time %></td>
+        </tr>
+      </table>
+      <br/>
+      <a target="_blank" href="<%= url %>">Click here to view on web</a>
+      <br/><br/>
+      <p>Warm regards,<br/>Millacle Church</p>
+      <div class="footer">
+        This is an automated message, please do not reply directly. <br/>
+        For further assistance, reply to this email or reach out through the appropriate channels.<br>
+        <a target="_blank" href="https://miracle-center-remera.vercel.app/">website</a>.
+      </div>
+
+    </div>
+  </body>
+</html>
