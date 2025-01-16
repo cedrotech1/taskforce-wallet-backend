@@ -18,6 +18,7 @@ export const getBudgetController = async (req, res) => {
       return res.status(404).json({
         success: false,
         message: "Budget not found for this user",
+        data:[]
       });
     }
 

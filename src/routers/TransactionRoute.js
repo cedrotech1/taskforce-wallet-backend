@@ -5,7 +5,7 @@ import {
   TransactionById,
   removeTransaction,
   generateUserReport,
-   getTransactionSummary
+  getTransactionSummary
 } from "../controllers/TransactionController";
 import { protect } from "../middlewares/protect";
 

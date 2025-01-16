@@ -261,164 +261,53 @@ const options = {
       },
     },
 
-    // "/api/v1/users/update/{id}": {
-    //   put: {
-    //     tags: ["Users"],
-    //     summary: "Update a user",
-    //     description: "Update a user",
-    //     operationId: "updateOneUser",
-    //     parameters: [
-    //       {
-    //         name: "id",
-    //         in: "path",
-    //         description: "User's id",
-    //         required: true,
-    //         schema: {
-    //           type: "string",
-    //         },
-    //       },
-    //     ],
-    //     requestBody: {
-    //       content: {
-    //         "application/json": {
-    //           schema: {
-    //             $ref: "#/components/schemas/User",
-    //           },
-    //           example: {
-    //             firstname: "John",
-    //             lastname: "Doe",
-    //             email: "test@example.com",
-    //             phone: "08012345678",
-    //           },
-    //         },
-    //         "multipart/form-data": {
-    //           schema: {
-    //             $ref: "#/components/schemas/User",
-    //           },
-    //         },
-    //       },
-    //     },
-    //     responses: {
-    //       200: {
-    //         description: "User deleted successfully",
-    //       },
-    //       400: {
-    //         description: "Bad request",
-    //       },
-    //       401: {
-    //         description: "Unauthorized",
-    //       },
-    //       404: {
-    //         description: "User not found",
-    //       },
-    //       500: {
-    //         description: "Something went wrong",
-    //       },
-    //     },
-    //   },
-    // },
-
     "/api/v1/users/update/{id}": {
-      "put": {
-        "tags": ["Users"],
-        "summary": "update Users",
-        "description": "update Users",
-        "operationId": "updateUsers",
-        parameters: [
-          {
-            name: "id",
-            in: "path",
-            description: "users's id",
-            required: true,
-            schema: {
-              type: "string",
+      put: {
+        tags: ["Users"],
+        summary: "Update a user",
+        description: "Update a user",
+        operationId: "updateOneUser",
+       
+        requestBody: {
+          content: {
+            "application/json": {
+              // schema: {
+              //   $ref: "#/components/schemas/User",
+              // },
+              example: {
+                firstname: "John",
+                lastname: "Doe",
+                phone: "08012345678",
+              },
+            },
+            "multipart/form-data": {
+              schema: {
+                $ref: "#/components/schemas/User",
+              },
             },
           },
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary",
-                    "description": "image file to upload"
-                  },
-                  "firstname": {
-                    "type": "string",
-                    "description": "first name"
-                  },
-                  "lastname": {
-                    "type": "string",
-                    "description": "last name"
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "phone name"
-                  }
-                },
-                "required": ["file"]
-              }
-            }
-          }
         },
-        "responses": {
-          "201": {
-            "description": "File uploaded successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "fileUrl": {
-                      "type": "string"
-                    },
-                    "public_id": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "File uploaded successfully",
-                    "fileUrl": "http://res.cloudinary.com/dzl8xve8s/pdf_uploads/sample.pdf",
-                    "public_id": "sample"
-                  }
-                }
-              }
-            }
+        responses: {
+          200: {
+            description: "User deleted successfully",
           },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "error": "No file uploaded"
-                  }
-                }
-              }
-            }
+          400: {
+            description: "Bad request",
           },
-          "401": {
-            "description": "Unauthorized"
+          401: {
+            description: "Unauthorized",
           },
-          "500": {
-            "description": "Something went wrong"
-          }
-        }
-      }
+          404: {
+            description: "User not found",
+          },
+          500: {
+            description: "Something went wrong",
+          },
+        },
+      },
     },
+
+
 // resetPassword
 "/api/v1/users/resetPassword/{email}": {
   put: {
@@ -1395,28 +1284,7 @@ const options = {
     summary: "all  a my report",
     description: "transaction",
     operationId: "all_transaction",
-    parameters: [
-      {
-        name: "startDate",
-        in: "query",
-        description: "he start date of the report range (format: YYYY-MM-DD).",
-        required: true,
-        schema: {
-          type: "string",
-          format:'date'
-        },
-      },
-      {
-        name: "endDate",
-        in: "query",
-        description: "he end date of the report range (format: YYYY-MM-DD).",
-        required: true,
-        schema: {
-          type: "string",
-          format:'date'
-        },
-      },
-    ],
+
 
     responses: {
       201: {

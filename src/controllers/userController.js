@@ -71,24 +71,19 @@ export const create_account = async (req, res) => {
 };
 
 
+//get users but only super admin can access this !
 export const getAllUsers = async (req, res) => {
   try {
+    const { role, id: userId } = req.user;
     let users;
+
       users = await getallUsers();
-
-      if (req.user.role === "superadmin") {
-  
-        users = users.filter(user => user.role === 'user');
-        
+      if (role !== "superadmin") {
+        return res.status(403).json({
+          success: false,
+          message: "Access denied, you are not system admin",
+        });
       }
-
-      if (req.user.role === "user") {
-  
-        users = users.filter(user => user.role !== 'superadmin' &&  user.id!=req.user.id);
-        
-      }
-  
-  
 
     return res.status(200).json({
       success: true,
@@ -106,8 +101,17 @@ export const getAllUsers = async (req, res) => {
 
 
 export const getOneUser = async (req, res) => {
-
   try {
+    const { role, id: userId } = req.user;
+    let users;
+
+      users = await getallUsers();
+      if (role !== "superadmin") {
+        return res.status(403).json({
+          success: false,
+          message: "Access denied, you are not system admin",
+        });
+      }
 
     const user = await getUser(req.params.id);
     if (!user) {
@@ -131,26 +135,16 @@ export const getOneUser = async (req, res) => {
 
 export const updateOneUser = async (req, res) => {
   try {
+    const { role, id: userId } = req.user;
 
-    let image;
-
-    if (req.files && req.files.file) {
-      try {
-        image = await imageUploader(req);
-  
-        if (!image || !image.url) {
-          throw new Error('Upload failed or image URL missing');
-        }
-    
-        // Assign the image URL to req.body.file
-        req.body.file = image.url;
-      } catch (error) {
-        console.error('Error uploading image:', error);
+    if ( !req.body.firstname || !req.body.phone || req.body.lastname === "") {
+        return res.status(400).json({
+          success: false,
+          message: "Please provide all information",
+        });
       }
-    }
-    
 
-    const user = await updateUser(req.params.id, req.body);
+    const user = await updateUser(userId, req.body);
     return res.status(200).json({
       success: true,
       message: "User updated successfully",

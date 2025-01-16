@@ -19,7 +19,13 @@ import {
         data: categories,
       });
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      res.status(500).json(
+        {
+          success: false, 
+          error: error.message,
+          data: [],
+         }
+      );
     }
   };
   
@@ -33,6 +39,7 @@ import {
         return res.status(404).json({
           success: false,
           message: "Category not found",
+          data: [],
         });
       }
   
@@ -42,7 +49,7 @@ import {
         data: category,
       });
     } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+      res.status(500).json({ success: false, error: error.message,data: [],});
     }
   };
   
