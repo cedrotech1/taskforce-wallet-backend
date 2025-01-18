@@ -15,9 +15,6 @@ export default (sequelize) => {
         foreignKey: 'categoryId',
         as: 'subcategories',
       });
-
-      // A Category can have many Transactions
-  
     }
   }
 
@@ -42,18 +39,18 @@ export default (sequelize) => {
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW, // Automatically set to current time
+        defaultValue: DataTypes.NOW,
       },
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW, // Automatically set to current time
+        defaultValue: DataTypes.NOW,
       },
     },
     {
       sequelize,
       modelName: "Category",
-      timestamps: true, // Automatically use createdAt and updatedAt
+      timestamps: true,
       freezeTableName: true,
     }
   );

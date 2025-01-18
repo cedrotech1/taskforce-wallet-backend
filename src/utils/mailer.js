@@ -69,6 +69,10 @@ class Email {
   async sendAccountAdded() {
     await this.send("accountAdded", "Your Account on wallete web is Ready");
   }
+
+  async sendNotification() {
+    await this.send("Notification", "Your Account notification");
+  }
 }
 
 export default Email;

@@ -29,11 +29,11 @@ export const getUserByEmail = async (email) => {
   }
 };
 
-export const getUserByCode = async (email,code) => {
+export const getUserByCode = async (email, code) => {
   try {
     const user = await users.findOne(
       {
-        where: { resetkey: code ,email:email},
+        where: { resetkey: code, email: email },
       }
     );
 
@@ -48,7 +48,7 @@ export const getUserByCode = async (email,code) => {
 export const getUserChristian = async () => {
   try {
     const allUsers = await users.findAll({
-      where: {  role: "christian",notify:"yes" },
+      where: { role: "christian", notify: "yes" },
       attributes: {
         exclude: ["password"],
       },

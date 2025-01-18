@@ -15,8 +15,6 @@ export default (sequelize) => {
         as: 'transactions',
       });
     }
-
-    
   }
 
   Subcategory.init(
@@ -36,18 +34,18 @@ export default (sequelize) => {
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW, // Automatically set to current time
+        defaultValue: DataTypes.NOW, 
       },
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW, // Automatically set to current time
+        defaultValue: DataTypes.NOW,
       },
     },
     {
       sequelize,
       modelName: "Subcategory",
-      timestamps: true, // Automatically use createdAt and updatedAt
+      timestamps: true,
       freezeTableName: true,
     }
   );

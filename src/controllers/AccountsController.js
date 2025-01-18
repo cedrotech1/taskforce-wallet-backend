@@ -67,7 +67,7 @@ export const getOneAccountController = async (req, res) => {
         message: "Account not found",
       });
     }
-    if(account.userId!=userId){
+    if (account.userId != userId) {
       return res.status(404).json({
         success: false,
         message: "Account not yours",

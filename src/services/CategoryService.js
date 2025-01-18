@@ -8,7 +8,6 @@ const Subcategory = db["Subcategory"];
 
 
 // Get all categories for a user   Subcategory
-
 export const getAllCategories = async (userId) => {
   return await Category.findAll({
     where: { userId },

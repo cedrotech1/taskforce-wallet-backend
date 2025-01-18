@@ -1,9 +1,8 @@
 import bcrypt from "bcrypt";
-
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const saltRounds = 10; 
+    const saltRounds = 10;
     const hashedPassword = await bcrypt.hash("1234", saltRounds);
     await queryInterface.bulkInsert('User', [
       {

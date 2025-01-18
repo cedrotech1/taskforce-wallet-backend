@@ -21,7 +21,7 @@ export const addSubcategory = async (req, res) => {
     const { name, categoryId } = req.body;
     const userId = req.user.id;
     const category = await getCategoryByIdAndUserId(categoryId, userId);
-  
+
     if (!category) {
       return res.status(404).json({
         success: false,

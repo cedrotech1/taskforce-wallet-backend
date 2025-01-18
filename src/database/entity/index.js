@@ -9,16 +9,13 @@ dotenv.config();
 const basename = _basename(__filename);
 const env = process.env.NODE_ENV;
 const config = require("../config/config.js")[env];
-
 const db = {};
-
 const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
   config
 );
-
 readdirSync(__dirname)
   .filter((file) => {
     const isTrue =

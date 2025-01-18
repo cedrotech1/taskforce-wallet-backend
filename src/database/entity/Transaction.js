@@ -65,22 +65,20 @@ export default (sequelize) => {
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW, // Automatically set to current time
+        defaultValue: DataTypes.NOW,
       },
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW, // Automatically set to current time
+        defaultValue: DataTypes.NOW,
       },
     },
     {
       sequelize,
-      timestamps: true, // Sequelize will automatically add 'createdAt' and 'updatedAt' fields
+      timestamps: true,
       modelName: 'Transaction',
       freezeTableName: true,
-      
     }
   );
-
   return Transaction;
 };

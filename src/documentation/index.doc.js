@@ -42,8 +42,8 @@ const options = {
               //   $ref: "#/components/schemas/User",
               // },
               example: {
-                email: "superadmin@gmail.com",
-                password: "1234",
+                email: "cedrickhakuzimana@gmail.com",
+                password: "Cedro@2312!",
               },
             },
             required: true,

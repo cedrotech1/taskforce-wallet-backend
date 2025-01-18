@@ -18,31 +18,30 @@ import {
   getBudgetByUserId,
   updateBudget
 } from "../services/BudgetService";
-
-
+import {getUser} from "../services/userService";
+import Email from "../utils/mailer";
 
 // Create Transaction
 export const addTransaction = async (req, res) => {
   try {
     const { accountId, subcategoryId, type, amount, description } = req.body;
     const userId = req.user.id;
+    const user = await getUser(userId);
     const { id } = req.params;
-    // console.log(accountId);
+    const account = await getAccountById(accountId);
 
-          const account = await getAccountById(accountId);
-      
-          if (!account) {
-            return res.status(404).json({
-              success: false,
-              message: "Account not found",
-            });
-          }
-          if(account.userId!=userId){
-            return res.status(404).json({
-              success: false,
-              message: "Account not yours",
-            });
-          }
+    if (!account) {
+      return res.status(404).json({
+        success: false,
+        message: "Account not found",
+      });
+    }
+    if (account.userId != userId) {
+      return res.status(404).json({
+        success: false,
+        message: "Account not yours",
+      });
+    }
 
     const budget = await getBudgetByUserId(userId);
 
@@ -53,8 +52,6 @@ export const addTransaction = async (req, res) => {
       });
     }
 
-    // console.log(budget)
-
     let User_account = await getAccountByUser(accountId, userId);
     if (!User_account) {
       return res.status(400).json({
@@ -62,14 +59,12 @@ export const addTransaction = async (req, res) => {
         message: "Account not found",
       });
     }
-    // console.log(User_account.balance)
     let account_balance = User_account.balance;
     let account_id = User_account.id;
     let budget_limit = budget.limit;
     let currentSpending = budget.currentSpending;
     let updatedSpending;
     let message = 'Transaction created successfully';
-    //  console.log(budget_limit);
 
     // Validate amount
     if (!amount || amount <= 0) {
@@ -100,6 +95,8 @@ export const addTransaction = async (req, res) => {
         if (budget_limit < updatedSpending) {
           message = "Transaction created successfully but you exceed bugget limit"
           console.log("now you exceed your bugdet limit!");
+          console.log(user)
+          await new Email(user).sendNotification();
         }
       }
     } else {
@@ -309,8 +306,6 @@ export const TransactionById = async (req, res) => {
 // Delete Transaction
 export const removeTransaction = async (req, res) => {
   try {
-
-
     const { id } = req.params;
     const userId = req.user.id;
     const transaction = await getTransactionById(id, userId);
@@ -320,14 +315,13 @@ export const removeTransaction = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Transaction not found." });
     }
-
     // console.log(transaction);
     let transaction_amount = transaction.amount;
     let transaction_type = transaction.type;
     let account_id = transaction.account.id;
     let account_balance = transaction.account.balance;
     let budget_limit = transaction.user.Budget.currentSpending;
-    let currentSpending = transaction.user.Budget.currentSpending; 
+    let currentSpending = transaction.user.Budget.currentSpending;
     let updatedSpending;
     let account_balance_toupdate = 0;
     let budget_limit_to_update = 0;

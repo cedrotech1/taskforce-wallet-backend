@@ -17,8 +17,8 @@ import imageUploader from "../helper/imageUplouder";
 
 export const create_account = async (req, res) => {
   try {
-    if ( !req.body.firstname || !req.body.phone || req.body.lastname === "" ||  !req.body.password || req.body.password === ""
-  ) {
+    if (!req.body.firstname || !req.body.phone || req.body.lastname === "" || !req.body.password || req.body.password === ""
+    ) {
       return res.status(400).json({
         success: false,
         message: "Please provide all information",
@@ -32,30 +32,30 @@ export const create_account = async (req, res) => {
         message: "Email already exists",
       });
     }
-    if (req.body.password!=req.body.comfirmpassword) {
+    if (req.body.password != req.body.comfirmpassword) {
       return res.status(400).json({
         success: false,
         message: "password mis match",
       });
     }
 
-    const role='user';
-    req.body.role=role;
-     
+    const role = 'user';
+    req.body.role = role;
+
     const newUser = await createUserCustomer(req.body);
-    newUser.password = '(keek it secreate)';
+    newUser.password = '(keeped it secreate)';
     await new Email(newUser).sendAccountAdded();
 
- 
+
 
     return res.status(201).json({
       success: true,
       message: "User created successfully",
       user: {
         id: newUser.id,
-        firstname: newUser.firstname,  
-        lastname: newUser.lastname,  
-        phone: newUser.phone,  
+        firstname: newUser.firstname,
+        lastname: newUser.lastname,
+        phone: newUser.phone,
         email: newUser.email,
         role: newUser.role,
         notify: newUser.notify,
@@ -77,13 +77,13 @@ export const getAllUsers = async (req, res) => {
     const { role, id: userId } = req.user;
     let users;
 
-      users = await getallUsers();
-      if (role !== "superadmin") {
-        return res.status(403).json({
-          success: false,
-          message: "Access denied, you are not system admin",
-        });
-      }
+    users = await getallUsers();
+    if (role !== "superadmin") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied, you are not system admin",
+      });
+    }
 
     return res.status(200).json({
       success: true,
@@ -99,19 +99,18 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-
 export const getOneUser = async (req, res) => {
   try {
     const { role, id: userId } = req.user;
     let users;
 
-      users = await getallUsers();
-      if (role !== "superadmin") {
-        return res.status(403).json({
-          success: false,
-          message: "Access denied, you are not system admin",
-        });
-      }
+    users = await getallUsers();
+    if (role !== "superadmin") {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied, you are not system admin",
+      });
+    }
 
     const user = await getUser(req.params.id);
     if (!user) {
@@ -137,12 +136,12 @@ export const updateOneUser = async (req, res) => {
   try {
     const { role, id: userId } = req.user;
 
-    if ( !req.body.firstname || !req.body.phone || req.body.lastname === "") {
-        return res.status(400).json({
-          success: false,
-          message: "Please provide all information",
-        });
-      }
+    if (!req.body.firstname || !req.body.phone || req.body.lastname === "") {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide all information",
+      });
+    }
 
     const user = await updateUser(userId, req.body);
     return res.status(200).json({
@@ -183,7 +182,7 @@ export const deleteOneUser = async (req, res) => {
         message: "Not authorized",
       });
     }
-  
+
     const user = await deleteUser(req.params.id);
 
     return res.status(200).json({
@@ -202,7 +201,7 @@ export const deleteOneUser = async (req, res) => {
 export const changePassword = async (req, res) => {
   console.log(req.user.id)
   const { oldPassword, newPassword, confirmPassword } = req.body;
-  if ( !oldPassword || !newPassword || !confirmPassword) {
+  if (!oldPassword || !newPassword || !confirmPassword) {
     return res.status(400).json({
       success: false,
       message: "Please provide userId, oldPassword, newPassword, and confirmPassword",
@@ -211,7 +210,7 @@ export const changePassword = async (req, res) => {
 
   try {
     const user = await GetUserPassword(req.user.id);
-    
+
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -267,7 +266,7 @@ export const changePassword = async (req, res) => {
 export const resetPassword = async (req, res) => {
   // console.log(req.user.id)
   const { oldPassword, newPassword, confirmPassword } = req.body;
-  if ( !oldPassword || !newPassword || !confirmPassword) {
+  if (!oldPassword || !newPassword || !confirmPassword) {
     return res.status(400).json({
       success: false,
       message: "Please provide userId, oldPassword, newPassword, and confirmPassword",
@@ -276,7 +275,7 @@ export const resetPassword = async (req, res) => {
 
   try {
     const user = await GetUserPassword(req.user.id);
-    
+
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -354,7 +353,7 @@ export const checkEmail = async (req, res) => {
 
 
     await new Email(user, null, code).sendResetPasswordCode();
-    const user1 = await updateUserCode(email, {resetkey:code});
+    const user1 = await updateUserCode(email, { resetkey: code });
 
     return res.status(200).json({
       success: true,
@@ -379,7 +378,7 @@ export const checkCode = async (req, res) => {
   }
 
   try {
-    const user = await getUserByCode(req.params.email,code);
+    const user = await getUserByCode(req.params.email, code);
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -416,7 +415,7 @@ export const ResetPassword = async (req, res) => {
     });
   }
   const { newPassword, confirmPassword } = req.body;
-  if ( !newPassword || !confirmPassword) {
+  if (!newPassword || !confirmPassword) {
     return res.status(400).json({
       success: false,
       message: "Please provide newPassword, and confirmPassword",
@@ -434,7 +433,7 @@ export const ResetPassword = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
-    await updateUser(user.id, { password: hashedPassword,resetkey:'' });
+    await updateUser(user.id, { password: hashedPassword, resetkey: '' });
 
     return res.status(200).json({
       success: true,
@@ -448,41 +447,3 @@ export const ResetPassword = async (req, res) => {
     });
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 1.Post
-// id
-// title
-// description
-// date and time
-// image
-// type(blog,event)
-// 2.choirs
-// id
-// name
-// user
-// 3.payiments
-// id 
-// name
-// amount
-// date and time
-// 4.images
-// id
-// cid
-// file
-// date and time
-

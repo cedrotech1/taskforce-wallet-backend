@@ -12,7 +12,7 @@ const Subcategory = db["Subcategory"];
 // Create a transaction and update account balance
 export const createTransaction = async (data) => {
   const { accountId, amount, transactionType } = data;
-  
+
   // Create the transaction
   const transaction = await Transaction.create(data);
 
@@ -33,7 +33,7 @@ export const createTransaction = async (data) => {
 // Get all transactions
 export const getAllTransactions = async (userId) => {
   return await Transaction.findAll({
-    where: { userId:userId },
+    where: { userId: userId },
     include: [
       {
         model: Account,
@@ -47,10 +47,10 @@ export const getAllTransactions = async (userId) => {
       {
         model: Subcategory,
         as: "subcategory",
-        include:[
+        include: [
           {
             model: Category,
-            as: "category",         
+            as: "category",
           },
         ],
       },
@@ -60,9 +60,9 @@ export const getAllTransactions = async (userId) => {
 };
 
 // Get a transaction by ID
-export const getTransactionById = async (id,userId) => {
+export const getTransactionById = async (id, userId) => {
   return await Transaction.findOne({
-    where: {id:id,userId:userId},
+    where: { id: id, userId: userId },
     include: [
       {
         model: Account,
@@ -72,20 +72,20 @@ export const getTransactionById = async (id,userId) => {
         model: User,
         as: "user",
         attributes: ["id", "firstname", "lastname", "email"],
-        include:[
+        include: [
           {
             model: Budget,
-            as: "Budget",         
+            as: "Budget",
           },
         ],
       },
       {
         model: Subcategory,
         as: "subcategory",
-        include:[
+        include: [
           {
             model: Category,
-            as: "category",         
+            as: "category",
           },
         ],
       },
@@ -105,60 +105,59 @@ export const deleteTransaction = async (id) => {
 
 
 export const transactionSummaryService = async (userId) => {
-    if (!Number.isInteger(userId)) {
-      throw new Error("Invalid user ID type. Must be an integer.");
-    }
-  
-    const transactions = await Transaction.findAll({
-      where: { userId }, // Ensure userId is an integer here
-      include: [
-        {
-          model: Account,
-          as: "account",
-        },
-        {
-          model: User,
-          as: "user",
-          attributes: ["id", "firstname", "lastname", "email"],
-          include:[
-            {
-              model: Budget,
-              as: "Budget",         
-            },
-          ],
-        },
-        {
-          model: Subcategory,
-          as: "subcategory",
-          include:[
-            {
-              model: Category,
-              as: "category",         
-            },
-          ],
-        },
-      ],
-    });
-  
-    const incomeTotal = transactions
-      .filter((t) => t.type === "income")
-      .reduce((sum, t) => sum + t.amount, 0);
-  
-    const expenseTotal = transactions
-      .filter((t) => t.type === "expense")
-      .reduce((sum, t) => sum + t.amount, 0);
-  
-    return {
-      incomeTotal,
-      expenseTotal,
-      chartData: transactions.reduce(
-        (acc, t) => {
-          if (t.type === "income") acc.income += t.amount;
-          if (t.type === "expense") acc.expense += t.amount;
-          return acc;
-        },
-        { income: 0, expense: 0 }
-      ),
-    };
+  if (!Number.isInteger(userId)) {
+    throw new Error("Invalid user ID type. Must be an integer.");
+  }
+
+  const transactions = await Transaction.findAll({
+    where: { userId }, // Ensure userId is an integer here
+    include: [
+      {
+        model: Account,
+        as: "account",
+      },
+      {
+        model: User,
+        as: "user",
+        attributes: ["id", "firstname", "lastname", "email"],
+        include: [
+          {
+            model: Budget,
+            as: "Budget",
+          },
+        ],
+      },
+      {
+        model: Subcategory,
+        as: "subcategory",
+        include: [
+          {
+            model: Category,
+            as: "category",
+          },
+        ],
+      },
+    ],
+  });
+
+  const incomeTotal = transactions
+    .filter((t) => t.type === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const expenseTotal = transactions
+    .filter((t) => t.type === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  return {
+    incomeTotal,
+    expenseTotal,
+    chartData: transactions.reduce(
+      (acc, t) => {
+        if (t.type === "income") acc.income += t.amount;
+        if (t.type === "expense") acc.expense += t.amount;
+        return acc;
+      },
+      { income: 0, expense: 0 }
+    ),
   };
-  
+};
