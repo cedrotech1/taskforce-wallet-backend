@@ -1232,11 +1232,11 @@ const options = {
   },
 },
 
-"/api/v1/transaction/user-report": {
+"/api/v1/transaction/transaction-report": {
   get: {
     tags: ["report"],
-    summary: "all  a my report",
-    description: "transaction",
+    summary: "get all  my transactions report in date range",
+    description: "get all  my transactions report in date range passed by user !",
     operationId: "all_transaction_report",
     parameters: [
       {
@@ -1302,32 +1302,6 @@ const options = {
     },
   },
 },
-
-"/api/v1/transaction/transaction-statistics": {
-  get: {
-    tags: ["report"],
-    summary: "all  a my report",
-    description: "transaction",
-    operationId: "all_transaction_statistics",
-
-
-    responses: {
-      201: {
-        description: "report  retrieved successfully",
-      },
-      400: {
-        description: "Bad request",
-      },
-      401: {
-        description: "Unauthorized",
-      },
-      500: {
-        description: "Something went wrong",
-      },
-    },
-  },
-},
-
 
   },
 

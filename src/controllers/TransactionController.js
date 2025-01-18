@@ -181,8 +181,60 @@ export const Transactions = async (req, res) => {
   }
 };
 
+
+
+export const generateTransactionUserReport = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    const userId = req.user.id; // Extract user ID from the logged-in user context
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide both startDate and endDate in the query parameters.",
+      });
+    }
+
+    // Fetch all transactions for the user
+    const allTransactions = await getAllTransactions(userId);
+
+    // Filter transactions by date range
+    const transactions = allTransactions.filter((transaction) => {
+      const transactionDate = new Date(transaction.createdAt);
+      return transactionDate >= new Date(startDate) && transactionDate <= new Date(endDate);
+    });
+
+    // Initialize summary variables
+    let totalExpense = 0;
+    let totalIncome = 0;
+
+    // Calculate summaries
+    transactions.forEach((transaction) => {
+      const { type, amount } = transaction;
+
+      // Update total income or expense
+      if (type === "expense") totalExpense += amount;
+      if (type === "income") totalIncome += amount;
+    });
+
+    // Response with filtered transactions and summaries
+    res.status(200).json({
+      success: true,
+      message: "Transactions retrieved successfully",
+      data: transactions,
+      summary: {
+        totalExpense,
+        totalIncome,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+
 // Get All Transactions
-export const TransactionStatistics = async (req, res) => {
+export const getTransactionSummary = async (req, res) => {
   try {
     const userId = req.user.id;
     const transactions = await getAllTransactions(userId);
@@ -306,103 +358,5 @@ export const removeTransaction = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
-  }
-};
-
-
-
-export const generateUserReport = async (req, res) => {
-  try {
-    const { startDate, endDate } = req.query;
-    const userId = req.user.id; // Extract user ID from the logged-in user context
-
-    if (!startDate || !endDate) {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide both startDate and endDate in the query parameters.",
-      });
-    }
-
-    const report = await generateUserReportService(userId, startDate, endDate);
-
-    return res.status(200).json({
-      success: true,
-      message: "User-specific report generated successfully.",
-      report,
-    });
-  } catch (error) {
-    console.error("Error generating user report:", error);
-    return res.status(500).json({
-      success: false,
-      message: error.message || "An error occurred while generating the report.",
-    });
-  }
-};
-
-export const getTransactionSummary = async (req, res) => {
-  try {
-    const userId = req.user.id; // Extract user ID from the logged-in user context
-
-    const transactions = await getAllTransactions(userId);
-    // Calculate summary
-    const summary = {
-      totalExpense: 0,
-      totalIncome: 0,
-      balance: 0,
-      categories: {},
-      subcategories: {},
-      transactionsByDate: {}
-    };
-
-    transactions.forEach(transaction => {
-      const { type, amount, category, subcategory, createdAt } = transaction;
-
-      // Calculate total income and expenses
-      if (type === 'income') {
-        summary.totalIncome += amount;
-      } else if (type === 'expense') {
-        summary.totalExpense += amount;
-      }
-
-      // Calculate by category
-      if (!summary.categories[category]) {
-        summary.categories[category] = { totalExpense: 0, totalIncome: 0 };
-      }
-      summary.categories[category][type === 'income' ? 'totalIncome' : 'totalExpense'] += amount;
-
-      // Calculate by subcategory
-      if (!summary.subcategories[subcategory]) {
-        summary.subcategories[subcategory] = {
-          category,
-          totalExpense: 0,
-          totalIncome: 0
-        };
-      }
-      summary.subcategories[subcategory][type === 'income' ? 'totalIncome' : 'totalExpense'] += amount;
-
-      // Calculate by date
-      const date = new Date(createdAt).toISOString().split('T')[0];
-      if (!summary.transactionsByDate[date]) {
-        summary.transactionsByDate[date] = { totalExpense: 0, totalIncome: 0, transactions: [] };
-      }
-      summary.transactionsByDate[date].totalExpense += type === 'expense' ? amount : 0;
-      summary.transactionsByDate[date].totalIncome += type === 'income' ? amount : 0;
-      summary.transactionsByDate[date].transactions.push(transaction);
-    });
-
-    // Calculate final balance
-    summary.balance = summary.totalIncome - summary.totalExpense;
-
-    return res.status(200).json({
-      success: true,
-      message: "Transaction summary retrieved successfully.",
-      summary
-    });
-  } catch (error) {
-    console.error("Error retrieving transaction summary:", error);
-    return res.status(500).json({
-      success: false,
-      message: error.message || "An error occurred while retrieving the transaction summary."
-    });
   }
 };

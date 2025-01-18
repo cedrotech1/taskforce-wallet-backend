@@ -4,9 +4,8 @@ import {
   Transactions,
   TransactionById,
   removeTransaction,
-  generateUserReport,
+  generateTransactionUserReport,
   getTransactionSummary,
-  TransactionStatistics
 } from "../controllers/TransactionController";
 import { protect } from "../middlewares/protect";
 
@@ -18,8 +17,8 @@ router.get("/", protect, Transactions);
 router.get("/one/:id", protect, TransactionById);
 // router.put("/update/:id", protect, editTransaction);
 router.delete("/delete/:id", protect, removeTransaction);
-router.get("/user-report", protect, generateUserReport);
+router.get("/transaction-report", protect, generateTransactionUserReport);
 router.get("/transaction-summary", protect, getTransactionSummary);
-router.get("/transaction-statistics", protect, TransactionStatistics);
+
 
 export default router;
