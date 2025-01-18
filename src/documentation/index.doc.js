@@ -1237,7 +1237,7 @@ const options = {
     tags: ["report"],
     summary: "all  a my report",
     description: "transaction",
-    operationId: "all_transaction",
+    operationId: "all_transaction_report",
     parameters: [
       {
         name: "startDate",
@@ -1283,7 +1283,32 @@ const options = {
     tags: ["report"],
     summary: "all  a my report",
     description: "transaction",
-    operationId: "all_transaction",
+    operationId: "all_transaction_summary",
+
+
+    responses: {
+      201: {
+        description: "report  retrieved successfully",
+      },
+      400: {
+        description: "Bad request",
+      },
+      401: {
+        description: "Unauthorized",
+      },
+      500: {
+        description: "Something went wrong",
+      },
+    },
+  },
+},
+
+"/api/v1/transaction/transaction-statistics": {
+  get: {
+    tags: ["report"],
+    summary: "all  a my report",
+    description: "transaction",
+    operationId: "all_transaction_statistics",
 
 
     responses: {

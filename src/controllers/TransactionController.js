@@ -181,6 +181,55 @@ export const Transactions = async (req, res) => {
   }
 };
 
+// Get All Transactions
+export const TransactionStatistics = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const transactions = await getAllTransactions(userId);
+
+    // Initialize summary variables
+    let totalExpense = 0;
+    let totalIncome = 0;
+    let totalTransactions = transactions.length;
+    let incomeTransactions = 0;
+    let expenseTransactions = 0;
+
+    // Calculate income and expense statistics
+    transactions.forEach((transaction) => {
+      const { type, amount } = transaction;
+
+      if (type === "expense") {
+        totalExpense += amount;
+        expenseTransactions++;
+      } else if (type === "income") {
+        totalIncome += amount;
+        incomeTransactions++;
+      }
+    });
+
+    // Calculate percentages
+    const expensePercentage = totalTransactions > 0 ? ((expenseTransactions / totalTransactions) * 100).toFixed(2) : 0;
+    const incomePercentage = totalTransactions > 0 ? ((incomeTransactions / totalTransactions) * 100).toFixed(2) : 0;
+
+    // Response with statistics
+    res.status(200).json({
+      success: true,
+      message: "Transactions statistics retrieved successfully",
+      summary: {
+        totalIncome,
+        totalExpense,
+        totalTransactions,
+        incomeTransactions,
+        expenseTransactions,
+        incomePercentage: `${incomePercentage}%`,
+        expensePercentage: `${expensePercentage}%`,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 
 // Get Transaction by ID
 export const TransactionById = async (req, res) => {

@@ -67,11 +67,8 @@ class Email {
   }
 
   async sendAccountAdded() {
-    await this.send("accountAdded", "Your Account on millacle web is Ready");
+    await this.send("accountAdded", "Your Account on wallete web is Ready");
   }
-
-
-
 }
 
 export default Email;
