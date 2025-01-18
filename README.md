@@ -1,4 +1,4 @@
-# Express.js Backend Application
+# Taskforce-wallet-backend Express.js Backend Application
 
 This is a backend application built using Node.js and Express.js, featuring Sequelize ORM for database management. It is designed to provide a RESTful API with robust features for managing resources.
 
@@ -28,7 +28,7 @@ This project provides a backend API with authentication, resource management, an
 - **Node.js**: Backend runtime environment
 - **Express.js**: Web framework
 - **Sequelize**: ORM for database interactions
-- **Database**: (Specify database, e.g., PostgreSQL, MySQL)
+- **Database**: PostgreSQL
 - **Babel**: ES6+ transpilation
 - **Nodemon**: Auto-restart for development
 - **cross-env**: Environment variable management
@@ -39,9 +39,9 @@ This project provides a backend API with authentication, resource management, an
 
 Before running the application, ensure you have:
 
-1. **Node.js** (v14 or higher)
-2. **npm** (or **yarn**)
-3. A database server (e.g., PostgreSQL, MySQL)
+1. **Node.js** (v18.18.0 or higher)
+2. **npm** 
+3. A database server PostgreSQL
 
 ---
 
@@ -54,7 +54,7 @@ Before running the application, ensure you have:
 
 2. **Navigate to the project directory**:
    ```bash
-   cd your-repo-name
+   cd taskforce-wallet-backend
    ```
 
 3. **Install dependencies**:
@@ -75,6 +75,20 @@ Before running the application, ensure you have:
      DB_PASSWORD=yourpassword
      DB_DATABASE=yourdatabase
      PORT=5000
+
+     for production database use 
+
+     # database environment[production]
+        PRO_DATABASE_NAME=db_app_ji6m
+        PRO_DATABASE_USER=db_app
+        PRO_DATABASE_PASSWORD=iNTB701XIAP7nAvc7meoncCcgVsVqwSv
+        PRO_DATABASE_HOST=dpg-cu4j835ds78s739uo940-a.oregon-postgres.render.com
+        PRO_DATABASE_PORT=5432
+
+        and run   
+         ```bash
+   npm run start:prod
+   ```
      ```
 
 5. **Run database migrations**:
@@ -93,6 +107,7 @@ Before running the application, ensure you have:
    ```
 
 8. Access the application at `http://localhost:5000`.
+9. Access the swagerdocumentation at `http://localhost:5000/api/v1/docs/`.
 
 ---
 
@@ -189,5 +204,5 @@ This project is licensed under the MIT License. See the `LICENSE` file for more 
 For questions or feedback, contact:
 
 - **Name**: Hakuzimana Cedrick
-- **Email**: cedrick@example.com
-
+- **Email**: cedrickhakuzimana@gmail.com
+- **Phone**: 0784366616
