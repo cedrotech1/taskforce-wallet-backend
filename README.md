@@ -86,9 +86,7 @@ Before running the application, ensure you have:
         PRO_DATABASE_PORT=5432
 
         and run : npm run start:prod
-         ```bash
-   npm run start:prod
-     ```
+
 
 5. **Run database migrations**:
    ```bash
