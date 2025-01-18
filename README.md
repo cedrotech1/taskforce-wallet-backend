@@ -85,10 +85,9 @@ Before running the application, ensure you have:
         PRO_DATABASE_HOST=dpg-cu4j835ds78s739uo940-a.oregon-postgres.render.com
         PRO_DATABASE_PORT=5432
 
-        and run   
+        and run : npm run start:prod
          ```bash
    npm run start:prod
-   ```
      ```
 
 5. **Run database migrations**:
