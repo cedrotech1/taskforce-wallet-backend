@@ -19,7 +19,7 @@ This is a backend application built using Node.js and Express.js, featuring Sequ
 
 ## About the Project
 
-This project provides a backend API with authentication, resource management, and database support using Sequelize. It is optimized for development and production environments.
+This project provides a backend API designed for both development and production environments, offering robust authentication, resource management, and database support through Sequelize. It features various endpoints for managing users, accounts, budgets, categories, subcategories, transactions, and reports. The API employs Bearer authentication, ensuring that users must log in and provide a token to access protected routes. This security mechanism helps safeguard sensitive data and operations within the system, making it suitable for scalable applications that require secure user management and resource tracking
 
 ---
 
